@@ -6,18 +6,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const seguidores = document.querySelector('.seguidores');
     const seguindo = document.querySelector('.seguindo')
     const perfil = document.querySelector('.profile-link')
+    const endpoint = "https://api.github.com/users/Thcmb"
 
-    fetch("https://api.github.com/users/Thcmb")
+    fetch(endpoint)
     .then(function(resposta) {
-        return resposta.json();
+        if(resposta.ok){
+            return resposta.json();
+        }
+        throw new Error('Erro ao carregar dados do usuário');
     })
     .then(function(json) {
         avatar.src = json.avatar_url;
-        nome.innerHTML = json.name;
-        usuario.innerHTML = '@' + json.login;
-        repositorios.innerHTML = json.public_repos;
-        seguidores.innerHTML = json.followers;
-        seguindo.innerHTML = json.following;
+        nome.innerText = json.name;
+        usuario.innerText = '@' + json.login;
+        repositorios.innerText = json.public_repos;
+        seguidores.innerText = json.followers;
+        seguindo.innerText = json.following;
         perfil.href = json.html_url;
+    })
+    .catch(function(erro) {
+        alert('Ocorreu um erro: ' + erro.message);
     })
 })
